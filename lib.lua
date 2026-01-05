@@ -3572,6 +3572,36 @@ function Library:CreateWindow(...)
 
     if Config.AutoShow then task.spawn(Library.Toggle) end
 
+    -- Добавляем невидимый resizer в правом нижнем углу
+    local Resizer = Library:Create('Frame', {
+        BackgroundTransparency = 1;
+        BorderSizePixel = 0;
+        Position = UDim2.new(1, -20, 1, -20);
+        Size = UDim2.new(0, 20, 0, 20);
+        ZIndex = 999;
+        Parent = Outer;
+    });
+
+    Resizer.InputBegan:Connect(function(Input)
+        if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
+            local StartSize = Outer.Size;
+            local StartX = Mouse.X;
+            local StartY = Mouse.Y;
+
+            while InputService:IsMouseButtonPressed(Enum.UserInputType.MouseButton1 or Enum.UserInputType.Touch) do
+                local DeltaX = Mouse.X - StartX;
+                local DeltaY = Mouse.Y - StartY;
+
+                local NewWidth = math.max(400, StartSize.X.Offset + DeltaX);
+                local NewHeight = math.max(300, StartSize.Y.Offset + DeltaY);
+
+                Outer.Size = UDim2.fromOffset(NewWidth, NewHeight);
+
+                RenderStepped:Wait();
+            end;
+        end;
+    end);
+
     Window.Holder = Outer;
 
     return Window;
@@ -3593,5 +3623,4 @@ Players.PlayerRemoving:Connect(OnPlayerChange);
 getgenv().Library = Library
 
 return Library
-
 
