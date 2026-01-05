@@ -1957,6 +1957,19 @@ do
             Parent = SliderOuter;
         });
 
+        local function UpdateSliderMaxSize()
+            local newMax = SliderInner.AbsoluteSize.X
+            if newMax and newMax > 0 then
+                Slider.MaxSize = newMax
+                if Slider.Display then
+                    Slider:Display()
+                end
+            end
+        end
+
+        SliderInner:GetPropertyChangedSignal('AbsoluteSize'):Connect(UpdateSliderMaxSize)
+        task.spawn(UpdateSliderMaxSize)
+
         Library:AddToRegistry(SliderInner, {
             BackgroundColor3 = 'MainColor';
             BorderColor3 = 'OutlineColor';
