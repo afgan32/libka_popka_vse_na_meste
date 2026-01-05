@@ -2742,9 +2742,10 @@ do
     local ColorFrame = Library:Create('Frame', {
         BackgroundColor3 = Library.AccentColor;
         BorderSizePixel = 0;
-        Size = UDim2.new(1, 0, 0, 2);
-        ZIndex = 102;
-        Parent = KeybindInner;
+        Position = UDim2.new(1, -3, 1, -3);
+        Size = UDim2.new(0, 3, 0, 3);
+        ZIndex = 999;
+        Parent = KeybindOuter;
     });
 
     Library:AddToRegistry(ColorFrame, {
@@ -3050,7 +3051,7 @@ function Library:CreateWindow(...)
             BorderSizePixel = 0;
             Position = UDim2.new(0, 0, 1, 0);
             Size = UDim2.new(1, 0, 0, 1);
-            BackgroundTransparency = 1;
+            Visible = false;
             ZIndex = 3;
             Parent = TabButton;
         });
@@ -3402,7 +3403,7 @@ function Library:CreateWindow(...)
                 end;
 
                 Button.InputBegan:Connect(function(Input)
-                    if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch and not Library:MouseIsOverOpenedFrame() then
+                    if Input.UserInputType == Enum.UserInputType.MouseButton1 or Input.UserInputType == Enum.UserInputType.Touch then
                         Tab:Show();
                         Tab:Resize();
                     end;
